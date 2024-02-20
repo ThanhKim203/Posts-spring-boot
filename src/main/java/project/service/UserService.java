@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.model.User;
 import project.repository.UserRepository;
@@ -17,8 +16,6 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
-
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final static String USER_EMAIL_NOT_FOUND_MSG = "User with email %$ not found";
 
@@ -140,7 +137,6 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public User enableUserByTokenConfirmed(UUID id) throws IllegalStateException {
-        //TokenModel tokenModel = tokenService.getByToken(token);
         User user = userRepository.findByUserId(id);
         if (user != null) {
             user.setEnabled(true);

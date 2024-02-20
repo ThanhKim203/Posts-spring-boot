@@ -29,7 +29,6 @@ public class Role implements GrantedAuthority, Serializable {
             inverseJoinColumns = @JoinColumn(name = "userId"))
     private List<User> users;
 
-
     @Override
     public String getAuthority() {
         return this.roleName.toString();

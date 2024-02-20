@@ -9,7 +9,6 @@ import project.repository.PostRepository;
 
 import javax.transaction.Transactional;
 import java.awt.print.Pageable;
-import java.util.UUID;
 
 @Service
 @RequestMapping(path = "api/v1/token")
@@ -29,6 +28,4 @@ public class PostService {
     public Page<Post> findAll(Pageable pageable) {
         return postRepository.findAll((org.springframework.data.domain.Pageable) pageable);
     }
-
-//    public Post getPostById(UUID id) throws PostNot
 }

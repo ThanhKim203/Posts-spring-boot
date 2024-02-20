@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import project.service.UserService;
 
 @Configuration
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -27,7 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                //.anyRequest().permitAll() //all request are permitted
                 .antMatchers(HttpMethod.GET,"/api/v1/user/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST,"/api/v1/user").permitAll()
                 .antMatchers(HttpMethod.DELETE,"/api/v1/user/**").hasRole("ADMIN")
@@ -51,5 +49,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
 }

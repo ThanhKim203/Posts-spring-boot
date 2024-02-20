@@ -92,7 +92,6 @@ public class CommentController {
     public Comment updateCommentWithPost(@PathVariable UUID idcomment, @PathVariable UUID idpost) {
         Comment comment = commentRepository.findById(idcomment).get();
         Post post = postRepository.findById(idpost).get();
-        //comment.assignPost(post);
         return commentRepository.save(comment);
     }
 }

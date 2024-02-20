@@ -32,8 +32,6 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     EmailSender emailSender;
 
