@@ -59,7 +59,6 @@ public class UserController {
         String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
-        //return userService.signUpUser(user);
         var newUser = new User();
         newUser = userService.signUpUser(user);
         //Create the token
@@ -76,7 +75,6 @@ public class UserController {
         emailSender.send(
                 newUser.getEmail(),
                 userService.buildEmail(newUser.getName(), link));
-
 
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }

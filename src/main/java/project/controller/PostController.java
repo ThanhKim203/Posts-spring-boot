@@ -46,7 +46,6 @@ public class PostController {
             }
         }
         return new ResponseEntity<List<Post>>(postRepository.findAll(), HttpStatus.OK);
-        //return new ResponseEntity<List<PostModel>>(postModelList,HttpStatus.OK);
     }
 
     @GetMapping("/posts/{id}")
@@ -55,17 +54,10 @@ public class PostController {
         if (postOne.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        //return new ResponseEntity<PostModel>(postOne.get(),HttpStatus.OK);
         postOne.get().add(linkTo(methodOn(PostController.class).getAllPosts()).withRel("Post List"));
         return new ResponseEntity<Post>(postOne.get(), HttpStatus.OK);
     }
 
-    //
-//    @PostMapping("/posts")
-//    public ResponseEntity<PostModel>savePost(@RequestBody @Valid PostModel post){
-//        return new ResponseEntity<PostModel>(postRepository.save(post), HttpStatus.CREATED);
-//    }
-//
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<?> deletePost(@PathVariable(value = "id") UUID id) {
         Optional<Post> postDelete = postRepository.findById(id);
@@ -76,57 +68,24 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //
-//    @PutMapping("/posts/{id}")
-//    public ResponseEntity<PostModel> updatePost(@PathVariable(value="id") UUID id,
-//    @RequestBody @Valid PostModel post){
-//        Optional<PostModel> postUpdate = postRepository.findById(id);
-//        if (postUpdate.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        post.setIdpost(postUpdate.get().getIdpost());
-//        return new ResponseEntity<PostModel>(postRepository.save(post), HttpStatus.OK);
-//    }
-//
-//
-//
-//    //using Service Module
-//    final PostService postService;
-//    public PostController(PostService postService){
-//        this.postService = postService;
-//    }
-//
-//    //Post with Service
+    @PutMapping("/posts/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable(value="id") UUID id,
+    @RequestBody @Valid Post post){
+        Optional<Post> postUpdate = postRepository.findById(id);
+        if (postUpdate.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        post.setPostId(postUpdate.get().getPostId());
+        return new ResponseEntity<Post>(postRepository.save(post), HttpStatus.OK);
+    }
+
     @PostMapping("/posts/v1")
     public ResponseEntity<Object> savePostV1(@RequestBody @Valid PostDto postDto) {
-//        if (postService.existsByTitle(postDto.getTitle())){
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Title is already Exist!");
-//        }
         var postModel = new Post();
         BeanUtils.copyProperties(postDto, postModel);
         postModel.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.save(postModel));
     }
-//
-//    //All Posts with Pageable
-//    @GetMapping("/posts/v1")
-//    public ResponseEntity<Page<PostModel>> getAllPostsV1(@PageableDefault(page = 0, size=10, sort="id", direction = Sort.Direction.ASC) Pageable pageable){
-//        return ResponseEntity.status(HttpStatus.OK).body(postService.findAll(pageable));
-//    }
-//
-
-//    Post by Owner
-//    @GetMapping("/posts/{id}/owner")
-//    public List<PostModel> getPostByOwner(@PathVariable(value="id")UUID id){
-//        List<PostModel> postbyOwner = postService.getPostByIdOwner(id);
-//        if (postbyOwner.isEmpty()){
-//            //return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return postService.getPostByIdOwner(id);
-//        //return new ResponseEntity<PostModel>(postbyOwner.get(),HttpStatus.OK);
-//        //postOne.get().add(linkTo(methodOn(PostController.class).getAllPosts()).withRel("Post List"));
-//        //return new ResponseEntity<List<PostModel>>(postbyOwner, HttpStatus.OK);
-//    }
 
     @GetMapping("/post")
     public List<Post> showPosts() {
@@ -142,8 +101,8 @@ public class PostController {
     @PutMapping("post/{idpost}/owner/{idowner}")
     public Post updatePostWithOwner(@PathVariable UUID idpost, @PathVariable UUID idowner) {
         Post post = postRepository.findById(idpost).get();
-        //UserModel user = ownerRepository.findById(idowner).get();
-        //post.assignUser(user);
+//        User user = ownerRepository.findById(idowner).get();
+//        post.assignUser(user);
         return postRepository.save(post);
     }
 }
